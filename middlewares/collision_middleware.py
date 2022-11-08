@@ -16,7 +16,6 @@ class CollisionMiddleware(GameMiddleware):
                     if isinstance(other_entity, Entity):
                         if entity.root_rect.colliderect(other_entity.root_rect) and entity != other_entity:
                             entity.on_collide_entity(other_entity)
-                            other_entity.on_collide_entity(entity)
                     else:
                         if entity.root_rect.colliderect(other_entity):
                             entity.on_collide_rect(other_entity)

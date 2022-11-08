@@ -23,4 +23,9 @@ class MovingCircle(Entity):
         pygame.draw.circle(game.Game.surface, self.color, self.root_rect.center, self.root_rect.width/2)
 
     def on_collide_entity(self, entity):
-        print(entity)
+        self.velocity = Vector2(self.velocity.x * -1, self.velocity.y)
+        print(self.velocity, self)
+
+    def on_collide_rect(self, entity):
+        self.velocity = Vector2(self.velocity.x * -1, self.velocity.y)
+        print(self.velocity, self)
