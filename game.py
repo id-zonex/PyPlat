@@ -3,6 +3,7 @@ import pygame
 from pygame import Surface, Rect
 from entity import Entity
 from entity_container import EntityContainer
+from middlewares.collision_middleware import CollisionMiddleware
 from moving_circle import MovingCircle
 
 entity_template = [
@@ -11,13 +12,8 @@ entity_template = [
     Rect(150, 50, 100, 100),
     Rect(200, 50, 100, 100),
     Rect(300, 50, 100, 100),
-    MovingCircle(),
-    MovingCircle(position=pygame.Vector2(100, 0)),
-    MovingCircle(position=pygame.Vector2(200, 0)),
-    MovingCircle(position=pygame.Vector2(100, 100)),
-    MovingCircle(position=pygame.Vector2(200, 50)),
-    MovingCircle(position=pygame.Vector2(100, 100)),
-    MovingCircle(position=pygame.Vector2(200, 50)),
+    MovingCircle(velocity=pygame.Vector2(1, 0)),
+    MovingCircle(rect=Rect(500, 0, 50, 100), velocity=pygame.Vector2(-1, 0)),
 ]
 
 
@@ -25,13 +21,18 @@ class Game:
     entities = EntityContainer()
     surface: Surface = None
 
+    collisions: CollisionMiddleware = None
+
     @classmethod
     def init(cls, surface: Surface):
         cls.surface = surface
+        cls.collisions = CollisionMiddleware(cls)
         cls.__init_entities(entity_template)
 
     @classmethod
     def main_loop(cls, delta_time: float):
+        cls.collisions.process()
+
         for entity in cls.entities.get_entities():
 
             if isinstance(entity, Entity):
